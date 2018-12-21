@@ -41,6 +41,8 @@ namespace IOTCameraBooth
         //Storage for edited photos
         public static StorageFolder editsFolder;
 
+        WriteableBitmap writeableBitmap;
+
         public EditPage()
         {
             this.InitializeComponent();
@@ -69,11 +71,12 @@ namespace IOTCameraBooth
         public void LoadProps()
         {
             Props.Clear();
-            int i = 1;
+            int i = 0;
             DirectoryInfo directory = new DirectoryInfo("../AppX/Assets/Props");
             foreach (FileInfo file in directory.GetFiles())
             {
-                Props.Add(new Prop(i, new BitmapImage(new Uri(file.FullName))));
+                //Props.Add(new Prop(i, new BitmapImage(new Uri(file.FullName))));
+                Props.Add(new Prop(i, file.FullName));
                 i += 1;
             }
         }
@@ -92,7 +95,7 @@ namespace IOTCameraBooth
             //Create an image decoder with the filestream.
             BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
             //Create a new writeableBitmap with the original captured image width and height.
-            WriteableBitmap writeableBitmap = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
+            /*WriteableBitmap*/ writeableBitmap = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
             //Set the source of the writable bitmap as the file stream of the opened original picture file.
             writeableBitmap.SetSource(stream);
             
@@ -216,7 +219,7 @@ namespace IOTCameraBooth
 
         private void lvProps_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            var id = e.Items.Cast<Prop>().Select(i => i.id).ToString();
+            var id = e.Items.Cast<Prop>().First().id.ToString(); //e.Items.Cast<Prop>().Select(i => i.id).ToString();
             e.Data.SetText(id);
             e.Data.RequestedOperation = DataPackageOperation.Move;
         }
@@ -233,8 +236,11 @@ namespace IOTCameraBooth
         {
             if (e.DataView.Contains(StandardDataFormats.Text))
             {
-                var id = await e.DataView.GetTextAsync();
+                var id = await e.DataView.GetTextAsync(); //should hav only 1 id
                 //Edits.Add(Props[Convert.ToInt32(id)].emoji);
+
+                writeableBitmap.Blit(new Rect(0, 0, 512, 512), Props[Convert.ToInt32(id)].sticker, new Rect(0, 0, 512, 512));
+                imgViewer.Source = writeableBitmap;
             }
         }
     }
