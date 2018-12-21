@@ -97,7 +97,7 @@ namespace IOTCameraBooth
             writeableBitmap.SetSource(stream);
             
             //Find the sticker file in the local directory.
-            FileInfo stickerFile = new FileInfo("../AppX/Assets/Stickers/StickerPlaceHolder.png");
+            FileInfo stickerFile = new FileInfo("../AppX/Assets/Stickers/PlaceHolder.png");
             //Get the sticker file from the directory.
             StorageFile sticker = await StorageFile.GetFileFromPathAsync(stickerFile.FullName);
             //Open the sticker file and store it as a filestream.
