@@ -203,6 +203,8 @@ namespace IOTCameraBooth
 
         private void CameraButton_Click(object sender, RoutedEventArgs e)
         {
+            CameraButton.IsEnabled = false;
+            CameraButton.Opacity = 0;
             CountDownTakePhoto();
         }
 
