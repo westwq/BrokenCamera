@@ -198,17 +198,20 @@ namespace IOTCameraBooth
             //var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             //canvas on display has different scaling compare to screen scaling
             //photo is 3264x1836
+
+            //TODO: fullscreen mode affected the aspect ratio. the image needs to follow the ratio for height 
             var scaleFactor = 3264/canvas.ActualWidth;
             var scaleFactorH = 1836 / canvas.ActualHeight;
             foreach(Windows.UI.Xaml.Controls.Image i in canvas.Children)
             {
                 double x = Canvas.GetLeft(i) * scaleFactorH;
-                double y = Canvas.GetTop(i) * scaleFactor;
-                double width = 110 * scaleFactor;
+                double y = Canvas.GetTop(i) * scaleFactorH;
+                double width = 110 * scaleFactorH;
+                double height = 110 * scaleFactorH;
                 string name = i.Name;
 
-                WriteableBitmap wb = Props[Convert.ToInt32(name)].sticker.Resize((int)width, (int)width, WriteableBitmapExtensions.Interpolation.Bilinear);
-                writeableBitmap.Blit(new Rect(x, y, width, width), wb, new Rect(0, 0, width, width));
+                WriteableBitmap wb = Props[Convert.ToInt32(name)].sticker.Resize((int)width, (int)height, WriteableBitmapExtensions.Interpolation.Bilinear);
+                writeableBitmap.Blit(new Rect(x, y, width, height), wb, new Rect(0, 0, width, height));
             }
 
             StorageFile editedFile = await WriteableBitmapToStorageFile(writeableBitmap, FileFormat.Jpeg);
