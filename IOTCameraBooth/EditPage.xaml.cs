@@ -304,8 +304,11 @@ namespace IOTCameraBooth
             //imgTest.TranslateY += e.Delta.Translation.Y;
             var image = (Windows.UI.Xaml.Controls.Image)sender;
             var transform = (CompositeTransform)image.RenderTransform;
-            transform.TranslateX += e.Delta.Translation.X;
-            transform.TranslateY += e.Delta.Translation.Y;
+            //transform.TranslateX += e.Delta.Translation.X;
+            //transform.TranslateY += e.Delta.Translation.Y;
+            Canvas.SetLeft(image, Canvas.GetLeft(image) + e.Delta.Translation.X);
+            Canvas.SetTop(image, Canvas.GetTop(image) + e.Delta.Translation.Y);
+
         }
 
         private void Canvas_ManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
