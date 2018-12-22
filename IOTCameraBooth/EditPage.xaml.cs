@@ -71,6 +71,8 @@ namespace IOTCameraBooth
 
         public void LoadProps()
         {
+            Props = SharedGlobals.Props;
+            /*
             Props.Clear();
             int i = 0;
             DirectoryInfo directory = new DirectoryInfo("../AppX/Assets/Props");
@@ -79,7 +81,7 @@ namespace IOTCameraBooth
                 //Props.Add(new Prop(i, new BitmapImage(new Uri(file.FullName))));
                 Props.Add(new Prop(i, file.FullName));
                 i += 1;
-            }
+            }*/
         }
 
         public void LoadStickers()
@@ -121,6 +123,7 @@ namespace IOTCameraBooth
             StorageFile editedFile = await WriteableBitmapToStorageFile(writeableBitmap, FileFormat.Jpeg);
 
             //Set the imgViewer source as the edited image..
+            imgViewer.Stretch = Stretch.Uniform;
             imgViewer.Source = writeableBitmap;
         }
 
@@ -199,15 +202,16 @@ namespace IOTCameraBooth
             //canvas on display has different scaling compare to screen scaling
             //photo is 3264x1836
 
-            //TODO: fullscreen mode affected the aspect ratio. the image needs to follow the ratio for height 
+            //TODO: fullscreen mode affected the aspect ratio. verify aspect ratio on machine 
             var scaleFactor = 3264/canvas.ActualWidth;
-            var scaleFactorH = 1836 / canvas.ActualHeight;
+            var marginTop = (canvas.ActualHeight - 1836/scaleFactor) / 2.0 ;
+            //var scaleFactorH = 1836 / canvas.ActualHeight;
             foreach(Windows.UI.Xaml.Controls.Image i in canvas.Children)
             {
-                double x = Canvas.GetLeft(i) * scaleFactorH;
-                double y = Canvas.GetTop(i) * scaleFactorH;
-                double width = 110 * scaleFactorH;
-                double height = 110 * scaleFactorH;
+                double x = Canvas.GetLeft(i) * scaleFactor;
+                double y = (Canvas.GetTop(i) - marginTop) * scaleFactor;
+                double width = 110 * scaleFactor;
+                double height = 110 * scaleFactor;
                 string name = i.Name;
 
                 WriteableBitmap wb = Props[Convert.ToInt32(name)].sticker.Resize((int)width, (int)height, WriteableBitmapExtensions.Interpolation.Bilinear);
