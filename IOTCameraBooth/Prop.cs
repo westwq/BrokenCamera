@@ -44,7 +44,7 @@ namespace IOTCameraBooth
             //Set the source of the sticker's writable bitmap as the file stream of the sticker.
             stickerWriteableBitmap.SetSource(ras);
 
-            sticker = stickerWriteableBitmap;
+            sticker = stickerWriteableBitmap; // stickerWriteableBitmap.Resize(110, 110, WriteableBitmapExtensions.Interpolation.Bilinear);
         }
     }
 }

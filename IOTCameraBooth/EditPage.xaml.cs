@@ -24,6 +24,7 @@ using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Windows.Graphics.Display;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -192,8 +193,26 @@ namespace IOTCameraBooth
             this.Frame.Navigate(typeof(MainPage));
         }
 
-        private void btnDone_Click(object sender, RoutedEventArgs e)
+        private async void btnDone_Click(object sender, RoutedEventArgs e)
         {
+            //var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            //canvas on display has different scaling compare to screen scaling
+            //photo is 3264x1836
+            var scaleFactor = 3264/canvas.ActualWidth;
+            var scaleFactorH = 1836 / canvas.ActualHeight;
+            foreach(Windows.UI.Xaml.Controls.Image i in canvas.Children)
+            {
+                double x = Canvas.GetLeft(i) * scaleFactorH;
+                double y = Canvas.GetTop(i) * scaleFactor;
+                double width = 110 * scaleFactor;
+                string name = i.Name;
+
+                WriteableBitmap wb = Props[Convert.ToInt32(name)].sticker.Resize((int)width, (int)width, WriteableBitmapExtensions.Interpolation.Bilinear);
+                writeableBitmap.Blit(new Rect(x, y, width, width), wb, new Rect(0, 0, width, width));
+            }
+
+            StorageFile editedFile = await WriteableBitmapToStorageFile(writeableBitmap, FileFormat.Jpeg);
+
             this.Frame.Navigate(typeof(UploadProgressPage));
         }
 
@@ -249,6 +268,7 @@ namespace IOTCameraBooth
                 //writeableBitmap.Blit(new Rect(0, 0, 512, 512), Props[Convert.ToInt32(id)].sticker, new Rect(0, 0, 512, 512));
                 //imgViewer.Source = writeableBitmap;
                 Windows.UI.Xaml.Controls.Image i = new Windows.UI.Xaml.Controls.Image();
+                i.Name = Convert.ToInt32(id).ToString();
                 i.Source = Props[Convert.ToInt32(id)].emoji;
                 i.Height = 110;
                 i.Width = 110;
