@@ -120,7 +120,7 @@ namespace IOTCameraBooth
 
 
             //Convert edited writable bitmap to a jpeg image file.
-            StorageFile editedFile = await WriteableBitmapToStorageFile(writeableBitmap, FileFormat.Jpeg);
+            //StorageFile editedFile = await WriteableBitmapToStorageFile(writeableBitmap, FileFormat.Jpeg);
 
             //Set the imgViewer source as the edited image..
             imgViewer.Stretch = Stretch.Uniform;
