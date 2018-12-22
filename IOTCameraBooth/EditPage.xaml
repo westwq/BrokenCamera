@@ -42,8 +42,10 @@
         </ListView>
         <!--<Rectangle Grid.Row="0" Grid.RowSpan="11" Grid.Column="8" Grid.ColumnSpan="1" Fill="DimGray"/>-->
         <TextBlock Text="Add some cool emojis and stickers!" FontSize="36" FontFamily="HelveticaNeue" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="7"/>
-        <Image x:Name="imgViewer" Grid.Row="1" Grid.RowSpan="9" Grid.Column="1" Grid.ColumnSpan="8" Stretch="UniformToFill" AllowDrop="True" DragOver="dropEmojiList_DragOver" Drop="dropEmojiList_Drop"/>
-        <!--<Canvas x:Name="canvas" Grid.Row="1" Grid.RowSpan="9" Grid.Column="1" Grid.ColumnSpan="8" AllowDrop="True" DragOver="canvas_DragOver" Drop="canvas_Drop"/>-->
+        <Image x:Name="imgViewer" Grid.Row="1" Grid.RowSpan="9" Grid.Column="1" Grid.ColumnSpan="8" Stretch="UniformToFill" AllowDrop="True" DragOver="dropEmojiList_DragOver" Drop="dropEmojiList_Drop" />
+        <Canvas x:Name="canvas" Grid.Row="1" Grid.RowSpan="9" Grid.Column="1" Grid.ColumnSpan="8"  AllowDrop="True" DragOver="dropEmojiList_DragOver" Drop="dropEmojiList_Drop" DragEnter="canvas_DragEnter" DragLeave="canvas_DragLeave" >
+            <!--DragOver="canvas_DragOver" Drop="canvas_Drop"-->
+        </Canvas>
         <!--<ListView x:Name="lvDropEmojis" Grid.Row="1" Grid.RowSpan="9" Grid.Column="1" Grid.ColumnSpan="8" AllowDrop="True" DragOver="dropEmojiList_DragOver" Drop="dropEmojiList_Drop" />-->
         <Button x:Name="btnBack" Content="Back" Grid.Row="10" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" FontSize="32" FontFamily="HelveticaNeue" Click="btnBack_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Foreground="White" />
         <Button x:Name="btnDone" Content="Done" Grid.Row="10" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" FontSize="32" FontFamily="HelveticaNeue" Click="btnDone_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Foreground="White" />

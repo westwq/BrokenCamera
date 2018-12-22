@@ -197,9 +197,15 @@ namespace IOTCameraBooth
             this.Frame.Navigate(typeof(UploadProgressPage));
         }
 
+        private void canvas_DragStarting(UIElement sender, DragStartingEventArgs e)
+        {
+            e.Data.RequestedOperation = DataPackageOperation.Move;
+        }
+
         private void canvas_DragOver(object sender, DragEventArgs e)
         {
-            e.AcceptedOperation = DataPackageOperation.Copy;
+            e.AcceptedOperation = DataPackageOperation.Move;
+            //e.DragUIOverride.IsContentVisible = true;
         }
 
         private async void canvas_Drop(object sender, DragEventArgs e)
@@ -238,10 +244,53 @@ namespace IOTCameraBooth
             {
                 var id = await e.DataView.GetTextAsync(); //should hav only 1 id
                 //Edits.Add(Props[Convert.ToInt32(id)].emoji);
+                Point p = e.GetPosition(canvas);
 
-                writeableBitmap.Blit(new Rect(0, 0, 512, 512), Props[Convert.ToInt32(id)].sticker, new Rect(0, 0, 512, 512));
-                imgViewer.Source = writeableBitmap;
+                //writeableBitmap.Blit(new Rect(0, 0, 512, 512), Props[Convert.ToInt32(id)].sticker, new Rect(0, 0, 512, 512));
+                //imgViewer.Source = writeableBitmap;
+                Windows.UI.Xaml.Controls.Image i = new Windows.UI.Xaml.Controls.Image();
+                i.Source = Props[Convert.ToInt32(id)].emoji;
+                i.Height = 110;
+                i.Width = 110;
+                i.RenderTransform = new CompositeTransform();
+                i.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+                i.ManipulationStarting += Canvas_ManipulationStarting;
+                i.ManipulationDelta += canvas_CalculateDelta;
+                i.ManipulationCompleted += Canvas_ManipulationCompleted;
+                Canvas.SetLeft(i, p.X-55);
+                Canvas.SetTop(i, p.Y-55);
+                canvas.Children.Add(i);
+                
             }
+        }
+
+        private void canvas_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void canvas_DragLeave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void Canvas_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+        }
+
+        private void canvas_CalculateDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            //imgTest.TranslateX += e.Delta.Translation.X;
+            //imgTest.TranslateY += e.Delta.Translation.Y;
+            var image = (Windows.UI.Xaml.Controls.Image)sender;
+            var transform = (CompositeTransform)image.RenderTransform;
+            transform.TranslateX += e.Delta.Translation.X;
+            transform.TranslateY += e.Delta.Translation.Y;
+        }
+
+        private void Canvas_ManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
+        {
+
         }
     }
 }
