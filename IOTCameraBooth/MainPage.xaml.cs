@@ -103,6 +103,10 @@ namespace IOTCameraBooth
                 displayRequest = new DisplayRequest();
                 displayRequest.RequestActive();
                 DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+                // get available resolutions (Not recommended unless your current camera stream is not at its maximum resolution)
+                //var resolutions = mediaCapture.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo).ToList();
+                // set used resolution (Set a breakpoint here and read the resolution of each media stream then set to the one you want below)
+                //await mediaCapture.VideoDeviceController.SetMediaStreamPropertiesAsync(MediaStreamType.Photo, resolutions[1]);
             }
             catch(UnauthorizedAccessException)
             {
