@@ -203,6 +203,8 @@ namespace IOTCameraBooth
             //photo is 3264x1836
 
             //TODO: fullscreen mode affected the aspect ratio. verify aspect ratio on machine 
+            //var scaleFactor = writeableBitmap.PixelWidth/canvas.ActualWidth;
+            //var marginTop = (canvas.ActualHeight - writeableBitmap.PixelHeight/scaleFactor) / 2.0 ;
             var scaleFactor = 1920/canvas.ActualWidth;
             //var scaleFactor = 680/canvas.ActualWidth;
             var marginTop = (canvas.ActualHeight - 1080/scaleFactor) / 2.0 ;
