@@ -103,6 +103,9 @@ namespace IOTCameraBooth
                 displayRequest = new DisplayRequest();
                 displayRequest.RequestActive();
                 DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+                var resolutions = mediaCapture.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo).ToList();
+                //hardcode 1920 by 1080
+                await mediaCapture.VideoDeviceController.SetMediaStreamPropertiesAsync(MediaStreamType.Photo, resolutions[335]);
             }
             catch(UnauthorizedAccessException)
             {
